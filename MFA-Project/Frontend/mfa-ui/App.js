@@ -2,8 +2,9 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import LoginScreen from './screens/LoginScreen'; 
-import { Text, View } from 'react-native'; 
+import LoginScreen from './screens/LoginScreen';
+import OTPScreen from './screens/OTPScreen';
+import { View, Text, StyleSheet } from 'react-native';
 
 const Stack = createNativeStackNavigator();
 
@@ -12,14 +13,31 @@ export default function App() {
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Login">
         <Stack.Screen name="Login" component={LoginScreen} />
-        
-        {}
-        <Stack.Screen name="OTPScreen" component={() => (
-          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-            <Text>OTP Screen Placeholder</Text>
-          </View>
-        )} />
+        <Stack.Screen name="OTPScreen" component={OTPScreen} />
+        <Stack.Screen name="SuccessScreen" component={SuccessScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
 }
+
+function SuccessScreen() {
+  return (
+    <View style={styles.container}>
+      <Text style={styles.successText}>🎉 Login Successful!</Text>
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#F5F6FA',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  successText: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#2ecc71'
+  }
+});

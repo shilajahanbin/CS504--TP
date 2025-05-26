@@ -9,7 +9,8 @@ CORS(app)
 # Sample user data (can later be replaced with database)
 users = {
     "shila": "123456",
-    "sara": "abc123"
+    "sara": "abc123",
+    "SumitSaiShila": "123456",
 }
 
 # In-memory OTP storage
@@ -63,4 +64,4 @@ def verify_otp():
     return jsonify({"error": "OTP not found"}), 404
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, host="0.0.0.0")
