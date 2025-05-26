@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import { BASE_URL } from '../constants';
 
-
 export default function LoginScreen({ navigation }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -23,14 +22,27 @@ export default function LoginScreen({ navigation }) {
       const data = await response.json();
 
       if (response.status === 200) {
-        Alert.alert("OTP Sent", "Check terminal for OTP.");
-        navigation.navigate('OTPScreen', { username });
+        const sendSMS = await fetch(`${BASE_URL}/send-sms`, {
+          method: 'POST',
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ username })
+        });
+
+        const smsResponse = await sendSMS.json();
+
+        if (sendSMS.status === 200) {
+          Alert.alert("📲 SMS Sent", "Please enter the OTP sent to your phone.");
+          navigation.navigate('OTPCodeScreen', { username });
+        } else {
+          Alert.alert("Error", smsResponse.error || "Failed to send SMS.");
+        }
+
       } else {
-        Alert.alert("Login Failed", data.error || "Something went wrong.");
+        Alert.alert("Login Failed", data.error || "Invalid username or password.");
       }
 
     } catch (error) {
-      Alert.alert("Error", "Could not connect to backend.");
+      Alert.alert("Connection Error", "Could not connect to backend.");
       console.log(error);
     }
   };
@@ -65,13 +77,13 @@ export default function LoginScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-container: {
-  flex: 1,
-  backgroundColor: '#F5F6FA',
-  justifyContent: 'flex-start',
-  paddingHorizontal: 30,
-  paddingTop: 100 
-},
+  container: {
+    flex: 1,
+    backgroundColor: '#F5F6FA',
+    justifyContent: 'flex-start',
+    paddingHorizontal: 30,
+    paddingTop: 100 
+  },
   title: {
     fontSize: 28,
     fontWeight: '600',

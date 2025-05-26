@@ -3,20 +3,22 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import LoginScreen from './screens/LoginScreen';
-import OTPScreen from './screens/OTPScreen';
+import DuoAuthScreen from './screens/DuoAuthScreen';
 import { View, Text, StyleSheet } from 'react-native';
+import OTPCodeScreen from './screens/OTPCodeScreen';
+
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="Login">
-        <Stack.Screen name="Login" component={LoginScreen} />
-        <Stack.Screen name="OTPScreen" component={OTPScreen} />
-        <Stack.Screen name="SuccessScreen" component={SuccessScreen} />
-      </Stack.Navigator>
-    </NavigationContainer>
+  <NavigationContainer>
+    <Stack.Navigator initialRouteName="Login">
+      <Stack.Screen name="Login" component={LoginScreen} />
+      <Stack.Screen name="OTPCodeScreen" component={OTPCodeScreen} />
+      <Stack.Screen name="SuccessScreen" component={SuccessScreen} />
+    </Stack.Navigator>
+  </NavigationContainer>
   );
 }
 
