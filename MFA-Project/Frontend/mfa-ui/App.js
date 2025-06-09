@@ -1,12 +1,12 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { View, Text, StyleSheet } from 'react-native';
 
 import LoginScreen from './screens/LoginScreen';
 import DuoAuthScreen from './screens/DuoAuthScreen';
 import OTPCodeScreen from './screens/OTPCodeScreen';
-import RegisterScreen from './screens/RegisterScreen'; 
+import RegisterScreen from './screens/RegisterScreen';
+import SuccessScreen from './screens/SuccessScreen'; // ✅ SuccessScreen واقعی
 
 const Stack = createNativeStackNavigator();
 
@@ -22,25 +22,3 @@ export default function App() {
     </NavigationContainer>
   );
 }
-
-function SuccessScreen() {
-  return (
-    <View style={styles.container}>
-      <Text style={styles.successText}>🎉 Login Successful!</Text>
-    </View>
-  );
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#F5F6FA',
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  successText: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#2ecc71'
-  }
-});

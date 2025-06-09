@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
 import axios from 'axios';
+import { BASE_URL } from '../constants';
 
 export default function RegisterScreen({ navigation }) {
   const [username, setUsername] = useState('');
@@ -14,7 +15,7 @@ export default function RegisterScreen({ navigation }) {
     }
 
     try {
-      const response = await axios.post('http://10.0.0.4:5000/register', {
+      const response = await axios.post(`${BASE_URL}/register`, {
         username,
         password,
         phone,
@@ -61,6 +62,13 @@ export default function RegisterScreen({ navigation }) {
         <TouchableOpacity onPress={handleRegister} style={styles.button}>
           <Text style={styles.buttonText}>Register</Text>
         </TouchableOpacity>
+
+        <View style={styles.switchContainer}>
+          <Text>Already have an account? </Text>
+          <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+            <Text style={styles.switchText}>Sign in</Text>
+          </TouchableOpacity>
+        </View>
       </ScrollView>
     </KeyboardAvoidingView>
   );
@@ -96,5 +104,15 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontWeight: 'bold',
     textAlign: 'center'
+  },
+  switchContainer: {
+    marginTop: 20,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  switchText: {
+    color: '#007bff',
+    fontWeight: 'bold'
   }
 });

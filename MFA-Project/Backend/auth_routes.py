@@ -1,4 +1,3 @@
-# auth_routes.py
 from flask import Blueprint, request, jsonify, session
 from user_model import create_user, get_user_by_username, validate_password, update_last_login
 from datetime import datetime
@@ -16,10 +15,10 @@ def register():
     if get_user_by_username(username):
         return jsonify({'error': 'Username already exists'}), 400
 
-    # 1. Create user in DB
+    # Create user in MongoDB
     create_user(username, password, phone)
 
-    # 2. Create Duo user
+    # Create user in Duo
     duo_success = create_duo_user(username, phone)
     if not duo_success:
         return jsonify({'error': 'User created in DB but failed to create Duo user'}), 500
@@ -38,6 +37,5 @@ def login():
 
     update_last_login(username)
     session['username'] = username
-    session['last_active'] = datetime.utcnow().isoformat()
 
     return jsonify({'message': 'Login successful, proceed to verify SMS'}), 200

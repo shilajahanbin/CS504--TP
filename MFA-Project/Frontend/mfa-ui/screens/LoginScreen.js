@@ -22,28 +22,31 @@ export default function LoginScreen({ navigation }) {
       const data = await response.json();
 
       if (response.status === 200) {
-        const sendSMS = await fetch(`${BASE_URL}/send-sms`, {
-          method: 'POST',
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ username })
-        });
-
-        const smsResponse = await sendSMS.json();
-
-        if (sendSMS.status === 200) {
-          Alert.alert("📲 SMS Sent", "Please enter the OTP sent to your phone.");
-          navigation.navigate('OTPCodeScreen', { username });
+        if (data.otp_required === false) {
+          Alert.alert("✅ Logged in", "You logged in successfully without OTP.");
+          navigation.navigate('Home');  
         } else {
-          Alert.alert("Error", smsResponse.error || "Failed to send SMS.");
+          const sendSMS = await fetch(`${BASE_URL}/send-sms`, {
+            method: 'POST',
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ username })
+          });
+
+          const smsData = await sendSMS.json();
+
+          if (sendSMS.status === 200) {
+            Alert.alert("📲 SMS Sent", "Please enter the OTP sent to your phone.");
+            navigation.navigate('OTPCodeScreen', { username });
+          } else {
+            Alert.alert("Error", smsData.error || "Failed to send OTP SMS.");
+          }
         }
-
       } else {
-        Alert.alert("Login Failed", data.error || "Invalid username or password.");
+        Alert.alert("Login Failed", data.error || "Invalid login.");
       }
-
     } catch (error) {
-      Alert.alert("Connection Error", "Could not connect to backend.");
-      console.log(error);
+      console.error("LOGIN ERROR:", error);
+      Alert.alert("Network Error", "Could not connect to server.");
     }
   };
 
@@ -55,15 +58,12 @@ export default function LoginScreen({ navigation }) {
       <TextInput
         style={styles.input}
         placeholder="Username"
-        placeholderTextColor="#999"
         value={username}
         onChangeText={setUsername}
       />
-
       <TextInput
         style={styles.input}
         placeholder="Password"
-        placeholderTextColor="#999"
         secureTextEntry
         value={password}
         onChangeText={setPassword}
@@ -72,6 +72,13 @@ export default function LoginScreen({ navigation }) {
       <TouchableOpacity style={styles.button} onPress={handleLogin}>
         <Text style={styles.buttonText}>Continue</Text>
       </TouchableOpacity>
+
+      <View style={styles.switchContainer}>
+        <Text>Don't have an account? </Text>
+        <TouchableOpacity onPress={() => navigation.navigate('Register')}>
+          <Text style={styles.switchText}>Register</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }
@@ -119,5 +126,15 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '600',
     textAlign: 'center'
+  },
+  switchContainer: {
+    marginTop: 20,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  switchText: {
+    color: '#007bff',
+    fontWeight: 'bold'
   }
 });
