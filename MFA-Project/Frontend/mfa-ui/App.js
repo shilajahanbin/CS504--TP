@@ -6,7 +6,7 @@ import LoginScreen from './screens/LoginScreen';
 import DuoAuthScreen from './screens/DuoAuthScreen';
 import OTPCodeScreen from './screens/OTPCodeScreen';
 import RegisterScreen from './screens/RegisterScreen';
-import SuccessScreen from './screens/SuccessScreen'; // ✅ SuccessScreen واقعی
+import SuccessScreen from './screens/SuccessScreen'; 
 
 const Stack = createNativeStackNavigator();
 
